@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Interaktif - Daya Listrik & Hukum Joule</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 30px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border: 1px solid #eef2f5;
+        }
+        .card h2 {
+            font-size: 16px;
+            color: #1e3c72;
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #444;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fafafa;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #2a5298;
+            background-color: #fff;
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 75%;
+            min-height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            background: #000;
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .step-list {
+            padding-left: 20px;
+            font-size: 14px;
+        }
+        .step-list li {
+            margin-bottom: 10px;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 10px 0;
+        }
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 500px;
+        }
+        table.data-table th, table.data-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        table.data-table th {
+            background-color: #2a5298;
+            color: white;
+            font-weight: 600;
+        }
+        table.data-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .pg-item {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+        .pg-question {
+            font-weight: 600;
+            font-size: 14px;
+            color: #222;
+            margin-bottom: 8px;
+        }
+        .pg-options {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .pg-option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            transition: background 0.15s;
+        }
+        .pg-option-label:hover {
+            background: #f0f4f8;
+        }
+        .pg-option-label input[type="radio"] {
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            background-color: #fafafa;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+            background-color: #fff;
+        }
+
+        .btn-submit {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-submit:active {
+            transform: scale(0.98);
+            background-color: #219150;
+        }
+        .btn-submit:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .badge {
+            background: #e1f0ff;
+            color: #1e3c72;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .alert-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #2a5298;
+            padding: 10px 12px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+        .time-info {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>LKPD: Daya Listrik & Hukum Joule (Panas Resistor)</h1>
+        <p>Mata Pelajaran: Dasar Elektronika | Disipasi Daya & Hubungan Singkat</p>
+        <div class="time-info">Waktu Buka: <span id="timeLogin">-</span></div>
+    </header>
+
+    <div class="container">
+        <!-- Form Utama LKPD -->
+        <form id="lkpdForm">
+
+            <!-- 1. Identitas Peserta Didik -->
+            <div class="card">
+                <h2>1. Identitas Peserta Didik</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="sekolah">Sekolah:</label>
+                        <select id="sekolah" required>
+                            <option value="">-- Pilih Sekolah --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kelas">Kelas:</label>
+                        <select id="kelas" required disabled>
+                            <option value="">-- Pilih Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap / Kelompok:</label>
+                        <select id="nama" required disabled>
+                            <option value="">-- Pilih Nama --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Panduan Praktikum -->
+            <div class="card">
+                <h2>2. Langkah Kerja & Panduan</h2>
+                <div class="alert-box">
+                    <strong>Fokus Praktikum:</strong> Pengamatan hubungan tegangan, arus, daya listrik (P = V x I), dan disipasi panas pada resistor/lampu serta efek konsleting (short circuit).
+                </div>
+                
+                <strong style="font-size:13px; color:#2a5298;">Pengujian 1: Pengaruh Arus/Tegangan Terhadap Daya & Nyala Lampu</strong>
+                <ol class="step-list" style="margin-top:6px;">
+                    <li>Buat rangkaian sederhana terdiri dari Baterai dan 1 Buah Lampu (R = 10 Ω).</li>
+                    <li>Ubah nilai tegangan Baterai bertahap (9 V, 18 V, dan 27 V).</li>
+                    <li>Ukur kuat arus (I) menggunakan Ammeter pada setiap tingkatan tegangan.</li>
+                    <li>Hitung daya listrik (P = V x I) dan amati intensitas sinar/nyala lampu pada simulator.</li>
+                </ol>
+
+                <strong style="font-size:13px; color:#2a5298; margin-top:10px; display:block;">Pengujian 2: Spesifikasi Resistor, Panas & Simulasi Konsleting</strong>
+                <ol class="step-list" style="margin-top:6px;">
+                    <li>Gunakan Baterai 9 V. Pasangkan resistor/lampu dengan nilai hambatan berbeda (10 Ω vs 1 Ω).</li>
+                    <li>Amati komponen mana yang menghasilkan arus lebih besar dan panas lebih tinggi (pendar garis/nyala).</li>
+                    <li>Hubungkan kutub positif dan negatif baterai secara langsung menggunakan kawat tanpa hambatan (R ≈ 0 Ω) untuk melihat fenomena konsleting (short circuit).</li>
+                </ol>
+            </div>
+
+            <!-- 3. Simulator PhET -->
+            <div class="card">
+                <h2>3. Area Simulator <span class="badge">PhET CCK: DC</span></h2>
+                <div class="iframe-container">
+                    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_all.html?locale=id" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- 4. Tabel Pengamatan -->
+            <div class="card">
+                <h2>4. Tabel Hasil Pengamatan</h2>
+                
+                <p style="font-size:12px; color:#666; margin-bottom:10px;"><strong>Pengujian 1:</strong> Pengaruh Tegangan Terhadap Arus, Daya, dan Nyala Lampu (R = 10 Ω)</p>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Tegangan (V)</th>
+                                <th>Hambatan (R)</th>
+                                <th>Arus Terukur (I)</th>
+                                <th>Daya Listrik (P = V x I)</th>
+                                <th>Visual Nyala Lampu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>9 V</td>
+                                <td>10 Ω</td>
+                                <td><input type="text" id="p1_i1" placeholder="... A" required></td>
+                                <td><input type="text" id="p1_p1" placeholder="... Watt" required></td>
+                                <td><input type="text" id="p1_nyala1" placeholder="Redup / Sedang / Terang" required></td>
+                            </tr>
+                            <tr>
+                                <td>18 V</td>
+                                <td>10 Ω</td>
+                                <td><input type="text" id="p1_i2" placeholder="... A" required></td>
+                                <td><input type="text" id="p1_p2" placeholder="... Watt" required></td>
+                                <td><input type="text" id="p1_nyala2" placeholder="Redup / Sedang / Terang" required></td>
+                            </tr>
+                            <tr>
+                                <td>27 V</td>
+                                <td>10 Ω</td>
+                                <td><input type="text" id="p1_i3" placeholder="... A" required></td>
+                                <td><input type="text" id="p1_p3" placeholder="... Watt" required></td>
+                                <td><input type="text" id="p1_nyala3" placeholder="Sangat Terang / Terbakar" required></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p style="font-size:12px; color:#666; margin-top:15px; margin-bottom:10px;"><strong>Pengujian 2:</strong> Pengujian Hambatan Rendah dan Hubungan Singkat (Short Circuit)</p>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Kondisi Pengujian</th>
+                                <th>Tegangan (V)</th>
+                                <th>Hambatan (R)</th>
+                                <th>Arus Total (I)</th>
+                                <th>Efek Termal / Kejadian Simulator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Resistor Standar</strong></td>
+                                <td>9 V</td>
+                                <td>10 Ω</td>
+                                <td><input type="text" id="p2_i1" placeholder="... A" required></td>
+                                <td><input type="text" id="p2_efek1" placeholder="Kondisi normal..." required></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resistor Sangat Rendah</strong></td>
+                                <td>9 V</td>
+                                <td>1 Ω</td>
+                                <td><input type="text" id="p2_i2" placeholder="... A" required></td>
+                                <td><input type="text" id="p2_efek2" placeholder="Tingkat panas / arus..." required></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Short Circuit (Konsleting)</strong></td>
+                                <td>9 V</td>
+                                <td>0 Ω (Kawat Langsung)</td>
+                                <td><input type="text" id="p2_i3" placeholder="... A (Sangat Besar)" required></td>
+                                <td><input type="text" id="p2_efek3" placeholder="Fenomena pada baterai/kawat..." required></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 5. Soal Pilihan Ganda (10 Soal Evaluasi) -->
+            <div class="card">
+                <h2>5. Soal Pilihan Ganda Evaluasi</h2>
+                <p style="font-size:12px; color:#666; margin-bottom:14px;">Pilihlah satu jawaban yang paling tepat berdasarkan Hukum Joule dan Daya Listrik!</p>
+
+                <!-- Soal 1 -->
+                <div class="pg-item">
+                    <div class="pg-question">1. Persamaan dasar untuk menghitung daya listrik (P) jika diketahui tegangan (V) dan kuat arus (I) adalah...</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg1" value="A" required> A. P = V / I</label>
+                        <label class="pg-option-label"><input type="radio" name="pg1" value="B"> B. P = V x I</label>
+                        <label class="pg-option-label"><input type="radio" name="pg1" value="C"> C. P = I / V</label>
+                        <label class="pg-option-label"><input type="radio" name="pg1" value="D"> D. P = V + I</label>
+                    </div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="pg-item">
+                    <div class="pg-question">2. Menurut Hukum Joule, energi panas (H) yang dihasilkan pada komponen berhambatan R sebanding dengan...</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg2" value="A" required> A. Kuadrat kuat arus (I²) dan waktu (t)</label>
+                        <label class="pg-option-label"><input type="radio" name="pg2" value="B"> B. Kebalikan dari kuat arus (1/I)</label>
+                        <label class="pg-option-label"><input type="radio" name="pg2" value="C"> C. Pengurangan antara tegangan dan arus</label>
+                        <label class="pg-option-label"><input type="radio" name="pg2" value="D"> D. Hanya tergantung pada nilai tegangan saja</label>
+                    </div>
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="pg-item">
+                    <div class="pg-question">3. Jika tegangan pada suatu beban resistor dinaikkan menjadi 2 kali lipat sedangkan hambatannya tetap, maka daya listrik yang diserap akan menjadi...</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg3" value="A" required> A. Tetap sama</label>
+                        <label class="pg-option-label"><input type="radio" name="pg3" value="B"> B. 2 kali lebih besar</label>
+                        <label class="pg-option-label"><input type="radio" name="pg3" value="C"> C. 4 kali lebih besar</label>
+                        <label class="pg-option-label"><input type="radio" name="pg3" value="D"> D. Setengah kali lebih kecil</label>
+                    </div>
+                </div>
+
+                <!-- Soal 4 -->
+                <div class="pg-item">
+                    <div class="pg-question">4. Sebuah beban listrik dipasang pada tegangan 9 V dan mengalirkan arus sebesar 0,9 A. Berapakah daya listrik yang dikonsumsi beban tersebut?</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg4" value="A" required> A. 8,1 Watt</label>
+                        <label class="pg-option-label"><input type="radio" name="pg4" value="B"> B. 10 Watt</label>
+                        <label class="pg-option-label"><input type="radio" name="pg4" value="C"> C. 0,1 Watt</label>
+                        <label class="pg-option-label"><input type="radio" name="pg4" value="D"> D. 81 Watt</label>
+                    </div>
+                </div>
+
+                <!-- Soal 5 -->
+                <div class="pg-item">
+                    <div class="pg-question">5. Fenomena konsleting (short circuit) terjadi ketika arus mengalir melalui jalur dengan hambatan yang...</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg5" value="A" required> A. Sangat besar mendekati tak hingga</label>
+                        <label class="pg-option-label"><input type="radio" name="pg5" value="B"> B. Sangat kecil mendekati nol</label>
+                        <label class="pg-option-label"><input type="radio" name="pg5" value="C"> C. Sama dengan nilai hambatan sumber</label>
+                        <label class="pg-option-label"><input type="radio" name="pg5" value="D"> D. Berubah-ubah secara konstan</label>
+                    </div>
+                </div>
+
+                <!-- Soal 6 -->
+                <div class="pg-item">
+                    <div class="pg-question">6. Dampak utama yang terjadi pada sumber tegangan/baterai ketika mengalami short circuit adalah...</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg6" value="A" required> A. Arus melonjak drastis dan timbul panas berlebih secara instan</label>
+                        <label class="pg-option-label"><input type="radio" name="pg6" value="B"> B. Baterai terisi ulang secara otomatis</label>
+                        <label class="pg-option-label"><input type="radio" name="pg6" value="C"> C. Tegangan baterai melonjak menjadi tak terhingga</label>
+                        <label class="pg-option-label"><input type="radio" name="pg6" value="D"> D. Arus listrik berhenti mengalir seketika</label>
+                    </div>
+                </div>
+
+                <!-- Soal 7 -->
+                <div class="pg-item">
+                    <div class="pg-question">7. Dua buah resistor R1 = 10 Ω dan R2 = 5 Ω dialiri arus yang sama besar. Resistor mana yang akan menghasilkan panas lebih cepat?</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg7" value="A" required> A. R2 (5 Ω) karena hambatannya lebih kecil</label>
+                        <label class="pg-option-label"><input type="radio" name="pg7" value="B"> B. R1 (10 Ω) karena disipasi daya P = I² x R lebih besar pada hambatan tinggi</label>
+                        <label class="pg-option-label"><input type="radio" name="pg7" value="C"> C. Keduanya menghasilkan panas yang identik</label>
+                        <label class="pg-option-label"><input type="radio" name="pg7" value="D"> D. Tidak ada yang menghasilkan panas</label>
+                    </div>
+                </div>
+
+                <!-- Soal 8 -->
+                <div class="pg-item">
+                    <div class="pg-question">8. Alat keselamatan listrik yang berfungsi memutus arus secara otomatis jika terjadi lonjakan arus akibat konsleting adalah...</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg8" value="A" required> A. Voltmeter</label>
+                        <label class="pg-option-label"><input type="radio" name="pg8" value="B"> B. Sekering (Fuse) / MCB</label>
+                        <label class="pg-option-label"><input type="radio" name="pg8" value="C"> C. Potensiometer</label>
+                        <label class="pg-option-label"><input type="radio" name="pg8" value="D"> D. Sakelar manual</label>
+                    </div>
+                </div>
+
+                <!-- Soal 9 -->
+                <div class="pg-item">
+                    <div class="pg-question">9. Jika sebuah kabel penghantar memiliki hambatan internal yang terlalu kecil dan dialiri arus yang sangat besar tanpa beban, maka...</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg9" value="A" required> A. Tegangan kabel menjadi nol dan aman</label>
+                        <label class="pg-option-label"><input type="radio" name="pg9" value="B"> B. Kabel akan menjadi sangat panas dan berpotensi meleleh/terbakar</label>
+                        <label class="pg-option-label"><input type="radio" name="pg9" value="C"> C. Hambatan kabel akan meningkat secara konstan</label>
+                        <label class="pg-option-label"><input type="radio" name="pg9" value="D"> D. Arus listrik berubah menjadi arus bolak-balik</label>
+                    </div>
+                </div>
+
+                <!-- Soal 10 -->
+                <div class="pg-item">
+                    <div class="pg-question">10. Mengapa perangkat pemanas listrik seperti setrika dan ceret listrik dirancang memiliki elemen pemanas dengan hambatan tertentu?</div>
+                    <div class="pg-options">
+                        <label class="pg-option-label"><input type="radio" name="pg10" value="A" required> A. Agar dapat mengubah energi listrik menjadi energi panas secara optimal sesuai Hukum Joule</label>
+                        <label class="pg-option-label"><input type="radio" name="pg10" value="B"> B. Agar tidak mengonsumsi daya listrik sama sekali</label>
+                        <label class="pg-option-label"><input type="radio" name="pg10" value="C"> C. Untuk mencegah timbulnya medan magnet pada alat</label>
+                        <label class="pg-option-label"><input type="radio" name="pg10" value="D"> D. Agar arus yang mengalir bernilai nol</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Analisis & Kesimpulan -->
+            <div class="card">
+                <h2>6. Analisis & Kesimpulan</h2>
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">1. Jelaskan pengaruh perubahan tegangan baterai terhadap arus listrik dan daya yang dihasilkan beban berdasarkan rumus P = V x I!</label>
+                    <textarea id="analisis1" placeholder="Tuliskan analisis hubungan V, I, dan P di sini..." required></textarea>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">2. Mengapa penurunan hambatan (R) yang sangat ekstrem dapat memicu terjadinya panas hebat/kebakaran pada simulasi short circuit?</label>
+                    <textarea id="analisis2" placeholder="Tuliskan analisis Hukum Joule dan short circuit di sini..." required></textarea>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">3. Bagaimana penerapan prinsip Hukum Joule pada peralatan pemanas sehari-hari dan cara mencegah bahaya konsleting listrik?</label>
+                    <textarea id="analisis3" placeholder="Tuliskan analisis penerapan & pencegahan bahaya di sini..." required></textarea>
+                </div>
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">4. Kesimpulan Akhir Praktikum:</label>
+                    <textarea id="kesimpulan" placeholder="Tuliskan kesimpulan mengenai hubungan Daya, Arus, Hambatan, dan Efek Panas..." required></textarea>
+                </div>
+                <button type="submit" id="btnSubmit" class="btn-submit">Kirim Hasil Praktikum</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // Set Time Display & Waktu Mulai
+        document.getElementById('timeLogin').textContent = new Date().toUTCString().replace("GMT", "WIB");
+        const waktuMulai = new Date().getTime();
+
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPLHBbExg1VIOwjts0chEGYD2ItjTh87psIYtr3VEBn6F9JYoslrrma4qCfF8eJJ_L/exec"; 
+        let masterDataSiswa = [];
+        
+        // Database CSV string
+        const csvDataSiswa = `Sekolah,Kelas,Nama Lengkap
+SMK NEGERI 1 SINGKAWANG,X TJK,01 ALVINO
+SMK NEGERI 1 SINGKAWANG,X TJK,02 DEBORA RATU GIASTA GULTOM
+SMK NEGERI 1 SINGKAWANG,X TJK,03 DENIS
+SMK NEGERI 1 SINGKAWANG,X TJK,04 DEO REVALDY AHMAD
+SMK NEGERI 1 SINGKAWANG,X TJK,05 EVAN KRESNA LEE
+SMK NEGERI 1 SINGKAWANG,X TJK,06 FEBRIYANTO
+SMK NEGERI 1 SINGKAWANG,X TJK,07 HERKULANUS PERDY
+SMK NEGERI 1 SINGKAWANG,X TJK,08 HIQMAL LIONEL ALVIANO
+SMK NEGERI 1 SINGKAWANG,X TJK,09 INDRA KESUMAH
+SMK NEGERI 1 SINGKAWANG,X TJK,10 JERRY KURNIAWAN
+SMK NEGERI 1 SINGKAWANG,X TJK,11 KABILA SYIFA
+SMK NEGERI 1 SINGKAWANG,X TJK,12 KEYLA KIRANA PUTRI
+SMK NEGERI 1 SINGKAWANG,X TJK,13 KRISTIAN DAFI
+SMK NEGERI 1 SINGKAWANG,X TJK,14 LIONEL VAN EXAUDI HUTABARAT
+SMK NEGERI 1 SINGKAWANG,X TJK,15 MIRATUL TASYA RAMADHANI
+SMK NEGERI 1 SINGKAWANG,X TJK,16 MUHAMMAD RAYHAN AL GHIFARY
+SMK NEGERI 1 SINGKAWANG,X TJK,17 MUHAMMAD ZAKY RAFANANDO
+SMK NEGERI 1 SINGKAWANG,X TJK,18 NATARI KEYZA JUNIAR
+SMK NEGERI 1 SINGKAWANG,X TJK,19 NAZUA KASTINA
+SMK NEGERI 1 SINGKAWANG,X TJK,20 NUR AZANI
+SMK NEGERI 1 SINGKAWANG,X TJK,21 NURAINI
+SMK NEGERI 1 SINGKAWANG,X TJK,22 PIRANDA RAMADANI
+SMK NEGERI 1 SINGKAWANG,X TJK,23 REBHELIA
+SMK NEGERI 1 SINGKAWANG,X TJK,24 REVAN
+SMK NEGERI 1 SINGKAWANG,X TJK,25 RIA ADHA
+SMK NEGERI 1 SINGKAWANG,X TJK,26 RINDU PRANITA NUARI
+SMK NEGERI 1 SINGKAWANG,X TJK,27 RIVALDO RANGGA SAPUTRA
+SMK NEGERI 1 SINGKAWANG,X TJK,28 SELVIA
+SMK NEGERI 1 SINGKAWANG,X TJK,29 SITI MARIYAM
+SMK NEGERI 1 SINGKAWANG,X TJK,30 SYIFA FAHIRA
+SMK NEGERI 1 SINGKAWANG,X TJK,31 WULANDARI
+SMK NEGERI 1 SINGKAWANG,X TJK,32 YULIANTI
+SMK NEGERI 1 SINGKAWANG,X TJK,33 YUNKHI
+SMK NEGERI 1 SINGKAWANG,XI TJK,01 RIZKY JUNIANSYAH
+SMK NEGERI 1 SINGKAWANG,XI TJK,02 SEMELIA
+SMK NEGERI 1 SINGKAWANG,XI TJK,03 AHMAD NOVA RIANTO
+SMK NEGERI 1 SINGKAWANG,XI TJK,04 AIDANAZMAN DATINOV
+SMK NEGERI 1 SINGKAWANG,XI TJK,05 AJI SOPYAN DWI
+SMK NEGERI 1 SINGKAWANG,XI TJK,06 ANGELA DARA LISTA
+SMK NEGERI 1 SINGKAWANG,XI TJK,07 ANNISA SALSA SHAFIRA
+SMK NEGERI 1 SINGKAWANG,XI TJK,09 AYRA
+SMK NEGERI 1 SINGKAWANG,XI TJK,10 AZURA
+SMK NEGERI 1 SINGKAWANG,XI TJK,11 BAYU CITRA PRATAMA
+SMK NEGERI 1 SINGKAWANG,XI TJK,12 BUNGA LESTARI
+SMK NEGERI 1 SINGKAWANG,XI TJK,13 CHASTLE ALPHA RICHIE
+SMK NEGERI 1 SINGKAWANG,XI TJK,14 DEVINA YUNA
+SMK NEGERI 1 SINGKAWANG,XI TJK,15 DINDA PUTRI RAHAYU
+SMK NEGERI 1 SINGKAWANG,XI TJK,16 EDWIN PRAYOGA
+SMK NEGERI 1 SINGKAWANG,XI TJK,17 FAJAR JULIANSYAH
+SMK NEGERI 1 SINGKAWANG,XI TJK,18 FRANSISCO DWI ADITYA
+SMK NEGERI 1 SINGKAWANG,XI TJK,19 GABRIEL ARESTA
+SMK NEGERI 1 SINGKAWANG,XI TJK,20 GLORIA ELSIA
+SMK NEGERI 1 SINGKAWANG,XI TJK,21 IHSAN AZHALLAH FAWWAZ
+SMK NEGERI 1 SINGKAWANG,XI TJK,22 INDRAYANI
+SMK NEGERI 1 SINGKAWANG,XI TJK,23 IRFAN RACHMANDANI FERDIAN
+SMK NEGERI 1 SINGKAWANG,XI TJK,24 KEVIN APRILIO
+SMK NEGERI 1 SINGKAWANG,XI TJK,25 KHOIRUNNISA
+SMK NEGERI 1 SINGKAWANG,XI TJK,26 LAFYCA CALYZZA
+SMK NEGERI 1 SINGKAWANG,XI TJK,27 MAHLIK ADI SAPUTRA
+SMK NEGERI 1 SINGKAWANG,XI TJK,28 MUHAMAD ADHA NUR IKHSAN
+SMK NEGERI 1 SINGKAWANG,XI TJK,29 MUHAMMAD NABIL PASHA
+SMK NEGERI 1 SINGKAWANG,XI TJK,30 NURLILA FADILLA
+SMK NEGERI 1 SINGKAWANG,XI TJK,31 RENI
+SMK NEGERI 1 SINGKAWANG,XI TJK,32 RIA KURNIATI
+SMK NEGERI 1 SINGKAWANG,XI TJK,33 RIDWAN RAKA HARTONO
+SMK NEGERI 1 SINGKAWANG,XI TJK,34 SAEPUL MAJID
+SMK NEGERI 1 SINGKAWANG,XI TJK,35 VIONA
+SMK NEGERI 1 SINGKAWANG,XI TJK,36 WAHYU
+SMK MUDITA SINGKAWANG,XI TJKT,01 ALICIA JENIFER
+SMK MUDITA SINGKAWANG,XI TJKT,02 ANGELA
+SMK MUDITA SINGKAWANG,XI TJKT,03 CALVINIUS BUNARTO
+SMK MUDITA SINGKAWANG,XI TJKT,04 CHELSY VEROSSA
+SMK MUDITA SINGKAWANG,XI TJKT,05 DERMAN JOHAN
+SMK MUDITA SINGKAWANG,XI TJKT,06 DESTIAN WIJAYA
+SMK MUDITA SINGKAWANG,XI TJKT,07 DISON NIKANOR
+SMK MUDITA SINGKAWANG,XI TJKT,08 ENNIO EDWARD
+SMK MUDITA SINGKAWANG,XI TJKT,09 FANI VANESA
+SMK MUDITA SINGKAWANG,XI TJKT,10 HANNY PHANGGESTY
+SMK MUDITA SINGKAWANG,XI TJKT,11 HERWIT BRIAN
+SMK MUDITA SINGKAWANG,XI TJKT,12 JAVI YANTO
+SMK MUDITA SINGKAWANG,XI TJKT,13 JEFRY
+SMK MUDITA SINGKAWANG,XI TJKT,14 JONATHAN VINCENTIUS
+SMK MUDITA SINGKAWANG,XI TJKT,15 KELLY ANGELA
+SMK MUDITA SINGKAWANG,XI TJKT,16 KEVIN KURNIAWAN
+SMK MUDITA SINGKAWANG,XI TJKT,17 LEONARDO
+SMK MUDITA SINGKAWANG,XI TJKT,18 LORENZO JONATHAN PANGESTU
+SMK MUDITA SINGKAWANG,XI TJKT,19 MEDY SANJAYA
+SMK MUDITA SINGKAWANG,XI TJKT,20 MEYCHEN CARNELLA
+SMK MUDITA SINGKAWANG,XI TJKT,21 MICHELLE
+SMK MUDITA SINGKAWANG,XI TJKT,22 NESHA FREDELINA XHIAUW
+SMK MUDITA SINGKAWANG,XI TJKT,23 RAYMEND
+SMK MUDITA SINGKAWANG,XI TJKT,24 RICARDO
+SMK MUDITA SINGKAWANG,XI TJKT,25 SUYANBUN LIPFIANDY
+SMK MUDITA SINGKAWANG,XI TJKT,26 TRI WIJAYA
+SMK MUDITA SINGKAWANG,XI TJKT,27 VINCENT
+SMK MUDITA SINGKAWANG,XI TJKT,28 VINCENT ALBERTO FEROZ
+SMK MUDITA SINGKAWANG,XI TJKT,29 VINCENT BUN
+SMK MUDITA SINGKAWANG,XI TJKT,30 VINCENT LAUNARDY
+SMK MUDITA SINGKAWANG,XI TJKT,31 VINSEN
+SMK MUDITA SINGKAWANG,XI TJKT,32 VITO ALBERT FEROZ
+SMK MUDITA SINGKAWANG,XI TJKT,33 VITON
+SMK MUDITA SINGKAWANG,XI TJKT,34 WENNI NINGSI WONGSO
+SMK MUDITA SINGKAWANG,XI TJKT,35 WILLIAM
+SMK MUDITA SINGKAWANG,XI TJKT,36 WILLIAM
+SMK MUDITA SINGKAWANG,XI TJKT,37 WILLIAM
+SMK MUDITA SINGKAWANG,XI TJKT,38 YUVENSIUS
+SMK MUDITA SINGKAWANG,XII TJKT,01 DALVIN ANDERSON
+SMK MUDITA SINGKAWANG,XII TJKT,02 DANNIEL DAVE DAISUKE
+SMK MUDITA SINGKAWANG,XII TJKT,03 DENNY
+SMK MUDITA SINGKAWANG,XII TJKT,04 FERDI NOVENDI
+SMK MUDITA SINGKAWANG,XII TJKT,05 FLOURA
+SMK MUDITA SINGKAWANG,XII TJKT,06 HENGKY
+SMK MUDITA SINGKAWANG,XII TJKT,07 JIU PHEN
+SMK MUDITA SINGKAWANG,XII TJKT,08 JULIANA DELVI WANTRIANI
+SMK MUDITA SINGKAWANG,XII TJKT,09 JULIYANTO
+SMK MUDITA SINGKAWANG,XII TJKT,10 JUN KIUH
+SMK MUDITA SINGKAWANG,XII TJKT,11 JUN PHEN
+SMK MUDITA SINGKAWANG,XII TJKT,12 JUNIATY
+SMK MUDITA SINGKAWANG,XII TJKT,14 KELVIN TERRENCE
+SMK MUDITA SINGKAWANG,XII TJKT,15 LEONARDO
+SMK MUDITA SINGKAWANG,XII TJKT,16 LEWIS MARCO
+SMK MUDITA SINGKAWANG,XII TJKT,17 LI NA
+SMK MUDITA SINGKAWANG,XII TJKT,18 MARCO GENIUS
+SMK MUDITA SINGKAWANG,XII TJKT,19 NELSON ALVARO
+SMK MUDITA SINGKAWANG,XII TJKT,21 NOFIKA
+SMK MUDITA SINGKAWANG,XII TJKT,22 NYIAN BUN
+SMK MUDITA SINGKAWANG,XII TJKT,23 NYUN CU
+SMK MUDITA SINGKAWANG,XII TJKT,24 OKTAVIANI
+SMK MUDITA SINGKAWANG,XII TJKT,25 RENDI
+SMK MUDITA SINGKAWANG,XII TJKT,26 RICO WIJAYA
+SMK MUDITA SINGKAWANG,XII TJKT,27 SI WEN
+SMK MUDITA SINGKAWANG,XII TJKT,28 SIAU KHIM
+SMK MUDITA SINGKAWANG,XII TJKT,29 SU CHUI
+SMK MUDITA SINGKAWANG,XII TJKT,30 TRI DERMERSIA
+SMK MUDITA SINGKAWANG,XII TJKT,31 VELIYAN VINSON
+SMK MUDITA SINGKAWANG,XII TJKT,32 VICKA ANJELICA
+SMK MUDITA SINGKAWANG,XII TJKT,33 WILLIAM
+SMK MUDITA SINGKAWANG,XII TJKT,34 WILLSON HANATA
+SMK MUDITA SINGKAWANG,XII TJKT,35 WILLY VEN
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,01 ANANDIKHA FITHRA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,02 AGNES MARGARETTA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,03 ADE REZKIANSYAH
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,04 CRISTY VALEN
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,05 DENNY GILLBERT
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,06 DION SAPUTRA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,07 ESTER APRIANI
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,08 FAHRI IMANNUDDIN
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,09 GABRIEL OHARA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,10 HINSA SILALAHI
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,11 IRAISYA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,12 ISNAL RIZOLA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,13 JONNY ALEXIUS
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,14 JULIARDI
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,15 LAUDYA SALSABILA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,16 LESKA ELSI VINRIANI
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,17 MARGARETHA EASTER WINA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,18 MISS SYAFIRA CLEOPATRA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,19 MUHAMMAD AKBAR JULRIZOI
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,20 MULAWARMAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,21 NICHOLAS WIRRY FREDICO
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,23 REHAN MULYARDO
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,24 RINGGA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,26 SARAH ANISA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,28 VIOLA ANGGELIA PUTRI
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,29 WIDYA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,30 YENITA
+SMK NEGERI 1 SINGKAWANG,XII TJK 3,31 ZHACKY NURAHMAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,01 ADE FIMANSYAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,02 AYMAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,03 AURA SAPHIRA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,05 DAVID
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,06 DIKA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,07 DIVA SEPTIARA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,08 ESHA WAHYU JUWANDI
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,09 FEBRIOLA LIE FHONG
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,10 GRESTIA ELDA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,11 GREYALDI JUSTIN JACKSON
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,12 INDRY VINARTI
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,13 JOHN YURA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,14 KEYSHA LARISSA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,15 LUCKY VALENTINO
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,16 MARVIN ALFANDA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,17 MEILY MAHA PUTRI
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,18 MISNADIH
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,19 MUHAMMAD RAFI RAMADHAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,20 NURHALIMAH
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,21 PURIM AILFANI
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,22 QIRAN ATHA YASSAR
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,24 RAHAEL NOVARIANDY
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,26 RINDRA FACHRI SAPUTRA
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,27 TUTI SULISTIAWATI
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,28 URAY AFISYA PUTRI
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,29 VIECK DEP
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,30 YUANDITHA KARIN
+SMK NEGERI 1 SINGKAWANG,XII TJK 2,31 ZADILA AL QINDI
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,01 AURA PUTRI
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,02 ARINI
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,03 ARDIANUS RANDA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,05 CELVIN
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,06 DANIA TRIAPSARI
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,07 DERY IAN SANDY SYAHPUTRA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,08 ELPIDIUS BRILLYANE
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,09 FIANELLA DENATTA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,10 FRANSISKUS GUNDU SETIAWAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,11 GEOVANO JEHARUT
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,12 GRAFATEIS SIAHAYA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,13 IMMANUEL BONY PRATAΜΑ
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,14 JESICA PRANATA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,15 KESYA VANESYA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,16 LESTARI
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,17 MARSYA ANASTASYA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,18 MEYSA PRATAMA HASIBUAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,19 MICHELLE LOUIS
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,20 MUHAMMAD RAFEL APRILIAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,21 OHALIP
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,22 PHAISAL NURZAKI
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,23 RAHMAN ALAMEYAH
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,24 RANDA SAPUTRA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,26 ROHIM KURNIAWAN
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,27 SEFTIANUS MARFIN
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,28 TATA MAHA DEWI
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,29 URAY CHINTYA SELVA
+SMK NEGERI 1 SINGKAWANG,XII TJK 1,30 VIA HANDAYANI`;
+
+        // Function Parse CSV Data
+        function parseCSVData() {
+            const lines = csvDataSiswa.trim().split('\n');
+            const result = [];
+            for (let i = 1; i < lines.length; i++) {
+                const cols = lines[i].split(',');
+                if (cols.length >= 3) {
+                    result.push({
+                        sekolah: cols[0].trim(),
+                        kelas: cols[1].trim(),
+                        nama: cols[2].trim()
+                    });
+                }
+            }
+            return result;
+        }
+
+        // Initialize Dropdowns Cascading
+        function initDropdowns() {
+            masterDataSiswa = parseCSVData();
+            const sekolahSelect = document.getElementById('sekolah');
+            const kelasSelect = document.getElementById('kelas');
+            const namaSelect = document.getElementById('nama');
+
+            const sekolahList = [...new Set(masterDataSiswa.map(item => item.sekolah))];
+            sekolahSelect.innerHTML = '<option value="">-- Pilih Sekolah --</option>';
+            sekolahList.forEach(sek => {
+                const opt = document.createElement('option');
+                opt.value = sek;
+                opt.textContent = sek;
+                sekolahSelect.appendChild(opt);
+            });
+
+            sekolahSelect.addEventListener('change', function() {
+                const selectedSekolah = this.value;
+                kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                namaSelect.innerHTML = '<option value="">-- Pilih Nama --</option>';
+                namaSelect.disabled = true;
+
+                if (selectedSekolah) {
+                    const kelasList = [...new Set(masterDataSiswa
+                        .filter(item => item.sekolah === selectedSekolah)
+                        .map(item => item.kelas))];
+                    
+                    kelasList.forEach(kls => {
+                        const opt = document.createElement('option');
+                        opt.value = kls;
+                        opt.textContent = kls;
+                        kelasSelect.appendChild(opt);
+                    });
+                    kelasSelect.disabled = false;
+                } else {
+                    kelasSelect.disabled = true;
+                }
+            });
+
+            kelasSelect.addEventListener('change', function() {
+                const selectedSekolah = sekolahSelect.value;
+                const selectedKelas = this.value;
+                namaSelect.innerHTML = '<option value="">-- Pilih Nama --</option>';
+
+                if (selectedKelas) {
+                    const namaList = masterDataSiswa
+                        .filter(item => item.sekolah === selectedSekolah && item.kelas === selectedKelas)
+                        .map(item => item.nama);
+
+                    namaList.forEach(nm => {
+                        const opt = document.createElement('option');
+                        opt.value = nm;
+                        opt.textContent = nm;
+                        namaSelect.appendChild(opt);
+                    });
+                    namaSelect.disabled = false;
+                } else {
+                    namaSelect.disabled = true;
+                }
+            });
+        }
+
+        initDropdowns();
+
+        // Kunci Jawaban Soal Pilihan Ganda (10 Soal)
+        const kunciJawaban = {
+            pg1: 'B',
+            pg2: 'A',
+            pg3: 'C',
+            pg4: 'A',
+            pg5: 'B',
+            pg6: 'A',
+            pg7: 'B',
+            pg8: 'B',
+            pg9: 'B',
+            pg10: 'A'
+        };
+
+        // Submit Form Event Handler
+        document.getElementById('lkpdForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            btn.textContent = "Mengirim Data...";
+
+            // Variabel Penilaian & Identifikasi LKPD
+            const sekolah = document.getElementById('sekolah').value;
+            const nama = document.getElementById('nama').value;
+            const kelas = document.getElementById('kelas').value;
+            const pilihanLkpdTerpilih = "LKPD 2 : Daya Listrik & Hukum Joule"; 
+            
+            const waktuSelesai = new Date().getTime();
+            const durasiDetik = Math.round((waktuSelesai - waktuMulai) / 1000);
+
+            // Hitung Skor Pilihan Ganda
+            let skorBenar = 0;
+            let totalSoalPG = 10;
+            let jawabanSiswaPG = {};
+
+            for (let i = 1; i <= totalSoalPG; i++) {
+                const selectedOpt = document.querySelector(`input[name="pg${i}"]:checked`);
+                const val = selectedOpt ? selectedOpt.value : '';
+                jawabanSiswaPG[`pg${i}`] = val;
+                if (val === kunciJawaban[`pg${i}`]) {
+                    skorBenar++;
+                }
+            }
+
+            // Nilai Akhir PG (Skala 100)
+            const nilaiAkhir = Math.round((skorBenar / totalSoalPG) * 100);
+
+            // Pengelompokan Data Observasi / Hasil Pengamatan Praktikum
+            const observasi = {
+                p1_i1: document.getElementById('p1_i1').value,
+                p1_p1: document.getElementById('p1_p1').value,
+                p1_nyala1: document.getElementById('p1_nyala1').value,
+                p1_i2: document.getElementById('p1_i2').value,
+                p1_p2: document.getElementById('p1_p2').value,
+                p1_nyala2: document.getElementById('p1_nyala2').value,
+                p1_i3: document.getElementById('p1_i3').value,
+                p1_p3: document.getElementById('p1_p3').value,
+                p1_nyala3: document.getElementById('p1_nyala3').value,
+                p2_i1: document.getElementById('p2_i1').value,
+                p2_efek1: document.getElementById('p2_efek1').value,
+                p2_i2: document.getElementById('p2_i2').value,
+                p2_efek2: document.getElementById('p2_efek2').value,
+                p2_i3: document.getElementById('p2_i3').value,
+                p2_efek3: document.getElementById('p2_efek3').value
+            };
+
+            // Pengelompokan Data Analisis & Kesimpulan
+            const answers = {
+                analisis1: document.getElementById('analisis1').value,
+                analisis2: document.getElementById('analisis2').value,
+                analisis3: document.getElementById('analisis3').value,
+                kesimpulan: document.getElementById('kesimpulan').value
+            };
+
+            // Struktur Payload Gabungan
+            const payload = {
+                sekolah: sekolah,
+                nama_lengkap: nama,
+                pilihan_lkpd: pilihanLkpdTerpilih, 
+                kelas: kelas,
+                durasi_detik: durasiDetik,
+                skor_pg_benar: skorBenar,
+                nilai_akhir: nilaiAkhir,
+                ...jawabanSiswaPG,
+                ...observasi,
+                ...answers
+            };
+
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                alert(`Hasil Praktikum & Evaluasi Berhasil Dikirim!\n\nSkor Pilihan Ganda Anda: ${skorBenar} / 10 (Nilai: ${nilaiAkhir})`);
+                btn.disabled = false;
+                btn.textContent = "Kirim Hasil Praktikum";
+            })
+            .catch(error => {
+                console.error("Error!", error.message);
+                alert("Terjadi kesalahan saat mengirim data. Silakan coba lagi.");
+                btn.disabled = false;
+                btn.textContent = "Kirim Hasil Praktikum";
+            });
+        });
+    </script>
+
+</body>
+</html>
