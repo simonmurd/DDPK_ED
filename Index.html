@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal LKPD Interaktif - Dasar Elektronika & Fisika</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* Header Portal */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        header p {
+            font-size: 13px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Banner Informasi Class */
+        .info-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid #2a5298;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .info-card div {
+            font-size: 13px;
+        }
+        .info-card strong {
+            color: #1e3c72;
+            font-size: 14px;
+            display: block;
+        }
+
+        /* Grid Layout Kartu Modul LKPD */
+        .grid-lkpd {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .lkpd-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid #eef2f5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .lkpd-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+        }
+
+        .lkpd-number {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+
+        .lkpd-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .lkpd-desc {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .btn-open {
+            display: block;
+            text-align: center;
+            background-color: #2a5298;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .btn-open:hover {
+            background-color: #1e3c72;
+        }
+
+        /* Skema Warna Kategori Badge */
+        .badge-blue { background: #e1f0ff; color: #1e3c72; }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        .badge-teal { background: #e0f2f1; color: #00796b; }
+        .badge-pink { background: #fce4ec; color: #c2185b; }
+        .badge-purple { background: #ede7f6; color: #512da8; }
+        .badge-orange { background: #fff3e0; color: #e65100; }
+        .badge-cyan { background: #e0f7fa; color: #00838f; }
+        .badge-grey { background: #eceff1; color: #37474f; }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Portal LKPD Interaktif Praktikum Virtual</h1>
+        <p>Laboratorium Virtual Elektro & Fisika Berbasis PhET Simulation</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- Info Card -->
+        <div class="info-card">
+            <div>
+                <strong>Mata Pelajaran: Dasar Elektronika & Fisika Terapan</strong>
+                <span>Pilih modul Lembar Kerja Peserta Didik (LKPD) di bawah ini untuk memulai praktikum simulasi.</span>
+            </div>
+        </div>
+
+        <!-- Daftar LKPD (Grid) -->
+        <div class="grid-lkpd">
+
+            <!-- Modul 1 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-blue">LKPD 01 • Circuit DC</span>
+                    <h2 class="lkpd-title">Rangkaian Seri & Paralel</h2>
+                    <p class="lkpd-desc">Karakteristik pembagi tegangan pada rangkaian seri, pembagi arus pada rangkaian paralel, dan efek open circuit.</p>
+                </div>
+                <a href="lkpd1.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+            <!-- Modul 2 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-orange">LKPD 02 • Thermal & Power</span>
+                    <h2 class="lkpd-title">Daya Listrik & Hukum Joule</h2>
+                    <p class="lkpd-desc">Mengamati hubungan antara arus, hambatan, energi panas ($P = V \times I$), serta bahaya konsoleting (short circuit).</p>
+                </div>
+                <a href="lkpd2.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+            <!-- Modul 3 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-teal">LKPD 03 • Capacitance</span>
+                    <h2 class="lkpd-title">Pengisian & Pengosongan Kapasitor</h2>
+                    <p class="lkpd-desc">Pengaruh geometri pelat ($A$ dan $d$) terhadap kapasitas ($C$) dan pengamatan waktu charging/discharging R-C.</p>
+                </div>
+                <a href="lkpd3.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+            <!-- Modul 4 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-pink">LKPD 04 • Real Battery</span>
+                    <h2 class="lkpd-title">Baterai & Hambatan Dalam</h2>
+                    <p class="lkpd-desc">Perbedaan baterai ideal vs baterai nyata dan pengukuran *drop voltage* terminal saat arus beban tinggi.</p>
+                </div>
+                <a href="lkpd4.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+            <!-- Modul 5 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-purple">LKPD 05 • Semiconductors</span>
+                    <h2 class="lkpd-title">Semikonduktor & Diode</h2>
+                    <p class="lkpd-desc">Prinsip kerja diode PN-Junction, pergerakan elektron-hole pada Forward Bias vs Reverse Bias sebagai penyearah.</p>
+                </div>
+                <a href="lkpd5.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+            <!-- Modul 6 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-green">LKPD 06 • Faraday's Law</span>
+                    <h2 class="lkpd-title">Induksi Elektromagnetik & Trafo</h2>
+                    <p class="lkpd-desc">Prinsip generator dan transformator melalui fluks magnet, kecepatan gerak magnet, dan jumlah lilitan kumparan.</p>
+                </div>
+                <a href="lkpd6.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+            <!-- Modul 7 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-cyan">LKPD 07 • Waves & Telecom</span>
+                    <h2 class="lkpd-title">Gelombang & Isyarat Frekuensi</h2>
+                    <p class="lkpd-desc">Sifat dasar transmisi data sinyal (frekuensi, panjang gelombang, amplitudo) dan fenomena refleksi impedansi.</p>
+                </div>
+                <a href="lkpd7.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+            <!-- Modul 8 -->
+            <div class="lkpd-card">
+                <div>
+                    <span class="lkpd-number badge-grey">LKPD 08 • Material Physics</span>
+                    <h2 class="lkpd-title">Konduktivitas & Resistivitas Kawat</h2>
+                    <p class="lkpd-desc">Analisis faktor fisik hambatan kawat penghantar ($R = \rho \frac{L}{A}$) dan estimasi *loss* tegangan pada kabel transmisi.</p>
+                </div>
+                <a href="lkpd8.html" class="btn-open">Buka Praktikum &rarr;</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; Media Pembelajaran Interaktif Dasar Elektronika Berbasis PhET Simulation
+    </footer>
+
+</body>
+</html>
